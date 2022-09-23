@@ -17,7 +17,7 @@ phases:
       - "echo Build completed on `date`"
       - "echo Pushing the Docker image..."
       - "docker push 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest"
-      - printf '[{"name":"aws-cicd-container","imageUri":"%s"}]' 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest > imagedefinitions.json
+      - printf '[{"name":"farget-task-container","imageUri":"%s"}]' 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest > imagedefinitions.json
 artifacts:
   files: 
     - imagedefinitions.json
