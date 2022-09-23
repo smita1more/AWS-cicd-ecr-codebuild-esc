@@ -1,23 +1,29 @@
 version: 0.2
-
 phases:
+  install:
+    runtime-versions:
+      docker: 18
   pre_build:
     commands:
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 111552573265.dkr.ecr.ap-south-1.amazonaws.com
-    
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 111552573265.dkr.ecr.ap-south-1.amazonaws.com)
+      - REPOSITORY_URI=__111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
-      - "echo Build started on `date`"
-      - "echo Building the Docker image..."
-      - "docker build -t demo ."
-      - "docker tag demo:latest 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest"
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t demo .
+      - docker tag demo:latest 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
   post_build:
     commands:
-      - "echo Build completed on `date`"
-      - "echo Pushing the Docker image..."
-      - "docker push 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest"
-      - printf '[{"name":"aws-cicd-container","imageUri":"%s"}]' 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest > imagedefinitions.json
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Writing image definitions file...
+      - printf '[{"name”:"aws-cicd-container","imageUri":"%s"}]' 111552573265.dkr.ecr.ap-south-1.amazonaws.com/demo:$IMAGE_TAG > imagedefinitions.json
 artifacts:
-  files: 
-    - imagedefinitions.json
-   
+  files: imagedefinitions.json
