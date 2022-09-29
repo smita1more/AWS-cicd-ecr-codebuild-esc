@@ -10,7 +10,7 @@ phases:
     commands:
       - "echo Build started on `date`"
       - "echo Building the Docker image..."
-      - "docker build -t ecs-deployment-repo ."
+      - "docker build -t 111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest ."
       - "docker tag ecs-deployment-repo:latest 111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest"
   post_build:
     commands:
