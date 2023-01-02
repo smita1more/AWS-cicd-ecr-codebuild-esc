@@ -4,19 +4,19 @@ phases:
   pre_build:
     commands:
       - aws --version
-      - aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 204252935480.dkr.ecr.ca-central-1.amazonaws.com
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/d9p8e3f6
       
   build:
     commands:
       - "echo Build started on `date`"
       - "echo Building the Docker image..."
       - docker build -t demo .
-      - docker tag demo:latest 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest
+      - docker tag demo:latest public.ecr.aws/d9p8e3f6/demo:latest
   post_build:
     commands:
       - "echo Build completed on `date`"
       - "echo Pushing the Docker image..."
-      - docker push 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest
+      - docker push public.ecr.aws/d9p8e3f6/demo:latest
       - printf '[{"name":"DemoContainer","imageUri":"%s"}]' 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest > imagedefinitions.json
 artifacts:
   files: 
