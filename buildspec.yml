@@ -4,20 +4,20 @@ phases:
   pre_build:
     commands:
       - aws --version
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 111552573265.dkr.ecr.ap-south-1.amazonaws.com
-    
+      - aws ecr get-login-password --region ca-central-1 | docker login --username AWS --password-stdin 204252935480.dkr.ecr.ca-central-1.amazonaws.com
+      
   build:
     commands:
       - "echo Build started on `date`"
       - "echo Building the Docker image..."
-      - docker build -t ecs-deployment-repo .
-      - docker tag ecs-deployment-repo:latest 111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest
+      - docker build -t demo .
+      - docker tag demo:latest 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest
   post_build:
     commands:
       - "echo Build completed on `date`"
       - "echo Pushing the Docker image..."
-      - docker push 111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest
-      - printf '[{"name":"farget-task-container","imageUri":"%s"}]' 111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest > imagedefinitions.json
+      - docker push 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest
+      - printf '[{"name":"DemoContainer","imageUri":"%s"}]' 204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest > imagedefinitions.json
 artifacts:
   files: 
     - imagedefinitions.json
