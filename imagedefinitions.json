@@ -1,7 +1,7 @@
 [
     {
-      "name": "farget-task-container",
-      "imageUri": "111552573265.dkr.ecr.ap-south-1.amazonaws.com/ecs-deployment-repo:latest "
+      "name": "DemoContainer",
+      "imageUri": "204252935480.dkr.ecr.ca-central-1.amazonaws.com/demo:latest "
     }
   ]
 
